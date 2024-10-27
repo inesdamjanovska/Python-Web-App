@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Admin UI</h1>
+    <h2>Requests and Results</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Request Name</th>
+                <th>File Reference</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody id="request-results">
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('/api/results');
+            const data = await response.json();
+            const tableBody = document.getElementById('request-results');
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.user}</td>
+                    <td>${row.request_name}</td>
+                    <td>${row.file_reference}</td>
+                    <td>${row.result}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
